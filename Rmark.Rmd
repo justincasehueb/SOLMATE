@@ -24,11 +24,13 @@ knitr::knit_engines$set(python = reticulate::eng_python)
 
 ```{r}
 library(reticulate)
-#library(crosstalk)
+library(crosstalk)
 input=read.csv("solarData/inputData.csv", header = T)
 target=read.csv("solarData/exampleData.csv")
 
-#crosstalk::filter_select("station","Select County:",input,"STID")
+sd = SharedData$new(input)
+
+crosstalk::filter_select("station","Select County:",sd,group="STID",)
 
 output=input[c(-26:-17)]
 output=output[c(-18:-21)]
