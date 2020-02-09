@@ -11,15 +11,12 @@ import csv
 import random
 
 
-
-###QUESTION 1###
-
 # splits according to a given size of first array
 def split(list, size):
     return list[:size], list[size:]
 
 # read the file
-readFile = open("frankenstein_data.csv", "r")
+readFile = open("solarData/purgola_2019.csv", "r")
 
 # remove columns 5 and 13, and convert remainders to floats
 # also convert the last column to 1 or 0
@@ -33,15 +30,12 @@ for i in range(len(x)):
     for j in range(len(x[i])):
         x[i][j] = float(x[i][j])
 
-#shuffle
-#random.shuffle(x)
-
 #split off 20% for test
-test, x = split(x,10)
+test, x = split(x,50)
 print(test)
 
 #split remaining into validation and training groups
-val, train = split(x, 10)
+val, train = split(x, 150)
 
 #confirmation of sizes
 print("Test:", len(test), "Validation:", len(val), "Training:", len(train), "\n")
@@ -81,7 +75,7 @@ trainVal = numpy.concatenate((train, val), axis=0)
 means = numpy.mean(trainVal, axis=0)
 stddev = numpy.std(trainVal, axis=0)
 
-'''
+
 #normalize training data
 for i in range(len(train)):
     for j in range(len(train[i])):
@@ -96,20 +90,21 @@ for i in range(len(val)):
 for i in range(len(test)):
     for j in range(len(test[i])):
         test[i][j] = (test[i][j] - means[j]) / stddev[j]
-'''
 
-##QUESTION 2##
 
 #NEURAL NETS#
 
 #created neural net
-mlp = MLPRegressor(solver = 'lbfgs', hidden_layer_sizes= 1000)
+mlp = MLPRegressor(solver = 'lbfgs', hidden_layer_sizes = 1000, learning_rate = 'adaptive', shuffle = True, alpha = .01)
 
 #fit on training data
 mlp.fit(train, trainY)
 
 #predict training data
 trainPredNN = mlp.predict(train)
+
+#fit on validation data
+mlp.fit(val, valY)
 
 #predict validation data
 valPredNN = mlp.predict(val)
@@ -130,8 +125,14 @@ for i in range(len(testY)):
     else:
         bad += 1
 
+
+combined = numpy.c_[testY,testPredNN]
+
+numpy.savetxt('predictions.csv', combined, delimiter = ',')
+
 #print("Good high:", goodUp, "Good low:", goodDown, "Bad:", bad)
 plt.plot(testY)
 plt.scatter(testLen,testPredNN)
+plt.scatter(testLen,(abs(testY-testPredNN)))
 plt.show()
 
