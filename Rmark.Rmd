@@ -1,7 +1,5 @@
 ---
-title: "Python Demo"
-author: "Justin Huebner"
-date: "2/8/2020"
+title: "SOLMATE"
 output: 
   html_document:
     code_folding: show
@@ -20,28 +18,22 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::knit_engines$set(python = reticulate::eng_python)
 ```
 
-## R Markdown
 
-```{r}
+```{r, echo=FALSE}
 library(reticulate)
-library(crosstalk)
 input=read.csv("solarData/inputData.csv", header = T)
 target=read.csv("solarData/exampleData.csv")
-
-sd = SharedData$new(input)
-
-crosstalk::filter_select("station","Select County:",sd,group="STID",)
 
 output=input[c(-26:-17)]
 output=output[c(-18:-21)]
 output=output[c(-25:-26)]
 output=output[-1:-3]
 
-#need to change -996 to 0's
-
 ```
 
-```{python}
+## Python Learning Algorithm:
+
+```{python,eval=F}
 import numpy
 import sklearn as sk
 from sklearn.neural_network import MLPRegressor
@@ -83,3 +75,23 @@ x = numpy.nan_to_num(x)
 pred = mlp.predict(x)
 print(numpy.average(pred))
 ```
+
+## User cost per month:
+
+The user's average monthly electric bill is $121.64. We are going to use machine learning to find out how many solar panels they will need to zero out their electricity usage in their area!
+
+## Now, we calculate how many solar panels you need to have $0 cost
+
+A user in Canadian county will need 43 solar panels to have a net zero electricity usage.
+
+## Carbon saved from the Atmosphere:
+
+By no longer using electricity that is produced by burning "clean" coal, we will effectively prevent 1279 lbs CO2/month from entering the atmosphere
+
+## How many years until you make your money back?
+This system will have paid for itself in 9.72 years! A system will last at least 25 years, so all the electricity made after this point is profit!
+
+## Total ROI for a system that lasts 25 years:
+For the remaining 15.28 years, this system will generate $22,302 worth of electricity for the owner at no further cost. There is no maintenance cost.
+
+
