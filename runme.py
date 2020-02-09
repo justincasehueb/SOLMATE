@@ -5,7 +5,7 @@ from sklearn.neural_network import MLPRegressor
 import joblib
 
 # read the file
-readFile = open("solarData/exampleData.csv", "r")
+readFile = open("data.csv", "r")
 
 # remove columns 5 and 13, and convert remainders to floats
 # also convert the last column to 1 or 0
@@ -37,4 +37,5 @@ mlp = joblib.load(filename)
 x = numpy.nan_to_num(x)
 
 pred = mlp.predict(x)
-print(numpy.average(pred))
+
+predAve = numpy.average(pred)
