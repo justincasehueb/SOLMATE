@@ -10,7 +10,7 @@ import matplotlib.lines as lines
 import csv
 import random
 
-import pickle
+import joblib
 
 
 # splits according to a given size of first array
@@ -115,28 +115,19 @@ valPredNN = mlp.predict(val)
 testPredNN = mlp.predict(test)
 
 filename = 'finalNN.sav'
-pickle.dump(mlp, open(filename, 'wb'))
+joblib.dump(mlp, filename)
 
 testLen = numpy.linspace(0, len(testY) - 1, len(testY))
 
-goodUp = 0
-goodDown = 0
-bad = 0
-for i in range(len(testY)):
-    if (testPredNN[i] > test[i,0] and testY[i] > test[i,0]):
-        goodUp += 1
-    elif (testPredNN[i] < test[i,0] and testY[i] < test[i,0]):
-        goodDown += 1
-    else:
-        bad += 1
-
-
 combined = numpy.c_[testY,testPredNN]
 
+#print
 numpy.savetxt('predictions.csv', combined, delimiter = ',')
+
+#print average error
 print(numpy.average(abs(testY-testPredNN)))
 
-#print("Good high:", goodUp, "Good low:", goodDown, "Bad:", bad)
+#plot the errors
 plt.plot(testY)
 plt.scatter(testLen,testPredNN)
 plt.scatter(testLen,(abs(testY-testPredNN)))
