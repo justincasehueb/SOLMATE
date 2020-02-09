@@ -10,6 +10,8 @@ import matplotlib.lines as lines
 import csv
 import random
 
+import pickle
+
 
 # splits according to a given size of first array
 def split(list, size):
@@ -112,6 +114,9 @@ valPredNN = mlp.predict(val)
 #predict test data
 testPredNN = mlp.predict(test)
 
+filename = 'finalNN.sav'
+pickle.dump(mlp, open(filename, 'wb'))
+
 testLen = numpy.linspace(0, len(testY) - 1, len(testY))
 
 goodUp = 0
@@ -129,6 +134,7 @@ for i in range(len(testY)):
 combined = numpy.c_[testY,testPredNN]
 
 numpy.savetxt('predictions.csv', combined, delimiter = ',')
+print(numpy.average(abs(testY-testPredNN)))
 
 #print("Good high:", goodUp, "Good low:", goodDown, "Bad:", bad)
 plt.plot(testY)
