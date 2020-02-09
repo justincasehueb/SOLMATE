@@ -1,14 +1,6 @@
 import numpy
 import sklearn as sk
 from sklearn.neural_network import MLPRegressor
-from sklearn.naive_bayes import GaussianNB
-
-from sklearn.ensemble import RandomForestClassifier
-
-import matplotlib.pyplot as plt
-import matplotlib.lines as lines
-import csv
-import random
 
 import joblib
 
